@@ -1,0 +1,44 @@
+@page "/nwfetchdata"
+
+@using Northwind.Shared
+@inject INorthwindService nwService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (employees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Employee Id</th>
+                <td>First Name</td>
+                <td>Last Name</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var em in employees)
+            {
+                <tr>
+                     <td>@em.EmployeeId</td>
+                     <td>@em.FirstName</td>
+                     <td>@em.LastName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@functions {
+    IEnumerable<Employee> employees;
+
+    protected override async Task OnInitAsync()
+    {
+        employees = await nwService.GetAllEmployeesAsync();
+    }
+}
